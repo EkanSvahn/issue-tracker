@@ -1,6 +1,7 @@
 "use client";
 
 import ErrorMessage from "@/app/components/ErrorMessage";
+import Spinner from "@/app/components/Spinner";
 import { createIssueSchema } from "@/app/validationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Callout, TextField } from "@radix-ui/themes";
@@ -10,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import SimpleMDE from "react-simplemde-editor";
-import { z } from "zod";
+import { set, z } from "zod";
 
 type IssueFormValues = z.infer<typeof createIssueSchema>;
 
@@ -25,12 +26,15 @@ const NewIssuePage = () => {
     resolver: zodResolver(createIssueSchema),
   });
   const [error, setError] = useState("");
+  const [isSubmitting, setSubmitting] = useState(false);
 
   const onSubmit: SubmitHandler<IssueFormValues> = async (data) => {
     try {
+      setSubmitting(true);
       await axios.post("/api/issues", data);
       router.push("/issues");
     } catch (error) {
+      setSubmitting(false);
       setError("An unexpected error occurred");
     }
   };
@@ -53,7 +57,9 @@ const NewIssuePage = () => {
           )}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        <Button type="submit">Submit</Button>
+        <Button disabled={isSubmitting} type="submit">
+          Submit new Issue {isSubmitting && <Spinner />}
+        </Button>
       </form>
     </div>
   );
