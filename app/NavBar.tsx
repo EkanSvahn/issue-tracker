@@ -6,13 +6,14 @@ import classNames from "classnames";
 import { usePathname } from "next/navigation";
 const NavBar = () => {
   const currentPath = usePathname();
+
   const linkItems = [
     {
       href: "/",
       label: "Dashboard",
     },
     {
-      href: "/issues",
+      href: "/issues/list",
       label: "Issues",
     },
   ];
