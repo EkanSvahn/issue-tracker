@@ -5,7 +5,14 @@ import { PiBugFill } from "react-icons/pi";
 import classNames from "classnames";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Box, Container, Flex, Text } from "@radix-ui/themes";
+import {
+  Avatar,
+  Box,
+  Container,
+  DropdownMenu,
+  Flex,
+  Text,
+} from "@radix-ui/themes";
 import Spinner from "@radix-ui/themes";
 
 const NavBar = () => {
@@ -59,12 +66,25 @@ const NavBar = () => {
                 </Link>
               )}
               {status === "authenticated" && (
-                <Link
-                  href="/api/auth/signout"
-                  className="text-red-500 hover:underline"
-                >
-                  Logout
-                </Link>
+                <DropdownMenu.Root>
+                  <DropdownMenu.Trigger>
+                    <Avatar
+                      src={session.user!.image!}
+                      fallback="?"
+                      size="3"
+                      radius="full"
+                      className="cursor-pointer"
+                    />
+                  </DropdownMenu.Trigger>
+                  <DropdownMenu.Content>
+                    <DropdownMenu.Label>
+                      <Text size="2">{session.user!.email}</Text>
+                    </DropdownMenu.Label>
+                    <DropdownMenu.Item>
+                      <Link href="/api/auth/signout">Logout</Link>
+                    </DropdownMenu.Item>
+                  </DropdownMenu.Content>
+                </DropdownMenu.Root>
               )}
             </Box>
           </Flex>
