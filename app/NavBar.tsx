@@ -56,7 +56,7 @@ const NavBar = () => {
           </Flex>
           <Flex align="center">
             <Box>
-              {status === "loading" && <Text>Loading...</Text>}
+              {/* {status === "loading" && <Text>Loading...</Text>} */}
               {status === "unauthenticated" && (
                 <Link
                   href="/api/auth/signin"
@@ -74,6 +74,7 @@ const NavBar = () => {
                       size="3"
                       radius="full"
                       className="cursor-pointer"
+                      referrerPolicy="no-referrer"
                     />
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Content>
